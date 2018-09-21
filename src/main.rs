@@ -46,8 +46,11 @@ fn fibon() {
     let mut n = String::new();
     io::stdin().read_line(&mut n).expect("error");
     let n: u32 = n.trim().parse().expect("error");
-    for i in 1..n+1 {
+    for i in 1..n + 1 {
         print!("{}\t", calc_fibon(i));
+        if i % 5 == 0 {
+            println!("");
+        }
     }
     println!("");
 }
@@ -85,17 +88,16 @@ fn fuck_christmas() {
             "On the {} day of Christmas \nMy true love sent to me:",
             num_str[i]
         );
-        let mut n = (i + 1) as i32;
+        let mut n = i + 1;
         while n > 0 {
-            let day_index = n as usize;
             if n == 1 {
                 if i == 0 {
-                    println!("  {}", twelve_days[day_index]);
+                    println!("  {}", twelve_days[n]);
                 } else {
                     println!("  {}", twelve_days[0]);
                 }
             } else {
-                println!("  {}", twelve_days[day_index]);
+                println!("  {}", twelve_days[n]);
             }
             n -= 1;
         }
