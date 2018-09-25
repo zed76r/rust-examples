@@ -3,7 +3,7 @@ use std::io;
 fn main() {
     loop {
         println!("==================================");
-        println!("1. 华氏度转换成摄氏度");
+        println!("1. 华氏度/摄氏度转换");
         println!("2.  n 阶斐波那契数列");
         println!("3. The Twelve Days of Christmas");
         println!("输入功能数，或者其他任意数字退出。");
@@ -12,7 +12,7 @@ fn main() {
         io::stdin().read_line(&mut func_num).expect("error");
         let func_num: i32 = func_num.trim().parse().expect("error");
         if func_num == 1 {
-            fahrenheit_to_celsius();
+            f_c_converter();
         } else if func_num == 2 {
             fibon();
         } else if func_num == 3 {
@@ -24,19 +24,37 @@ fn main() {
     }
 }
 
-fn fahrenheit_to_celsius() {
-    println!("输入华氏度");
+fn f_c_converter() {
+    println!(
+        "输入一个值，以F结尾代表华氏度，或者以C结尾为摄氏度。比如77F。"
+    );
     loop {
-        let mut fahrenheit = String::new();
+        let mut input_str = String::new();
         io::stdin()
-            .read_line(&mut fahrenheit)
-            .expect("请输入任意华氏度");
-        let fahrenheit: f64 = match fahrenheit.trim().parse() {
-            Ok(n) => n,
-            Err(_) => continue,
-        };
-        let celsius = 5.0 / 9.0 * (fahrenheit - 32.0);
-        println!("华氏度 {} 等同于摄氏度 {}", fahrenheit, celsius);
+            .read_line(&mut input_str)
+            .expect("输入一个值，以F结尾代表华氏度，或者以C结尾为摄氏度。比如77F。");
+        input_str = input_str.trim().to_string();
+        let at = input_str.len() - 1;
+        let (value, unit) = input_str.split_at_mut(at);
+        unit.make_ascii_uppercase();
+        if "F" == unit {
+            let fahrenheit: f64 = match value.parse() {
+                Ok(n) => n,
+                Err(_) => continue,
+            };
+            let celsius = 5.0 / 9.0 * (fahrenheit - 32.0);
+            println!("华氏度 {} 等同于摄氏度 {}", fahrenheit, celsius);
+        } else if "C" == unit {
+            let celsius: f64 = match value.parse() {
+                Ok(n) => n,
+                Err(_) => continue,
+            };
+            let fahrenheit = 9.0 / 5.0 * celsius + 32.0;
+            println!("摄氏度 {} 等同于华氏度 {}", celsius, fahrenheit);
+        } else {
+            println!("输入一个值，以F结尾代表华氏度，或者以C结尾为摄氏度。比如77F。");
+            continue;
+        }
         break;
     }
 }
