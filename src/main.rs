@@ -34,28 +34,33 @@ fn f_c_converter() {
             .expect("输入一个值，以F结尾代表华氏度，或者以C结尾为摄氏度。比如77F。");
         input_str = input_str.trim().to_string();
         let at = input_str.len() - 1;
-        let (value, unit) = input_str.split_at_mut(at);
-        unit.make_ascii_uppercase();
-        if "F" == unit {
-            let fahrenheit: f64 = match value.parse() {
-                Ok(n) => n,
-                Err(_) => continue,
-            };
-            let celsius = 5.0 / 9.0 * (fahrenheit - 32.0);
-            println!("华氏度 {} 等同于摄氏度 {}", fahrenheit, celsius);
-        } else if "C" == unit {
-            let celsius: f64 = match value.parse() {
-                Ok(n) => n,
-                Err(_) => continue,
-            };
-            let fahrenheit = 9.0 / 5.0 * celsius + 32.0;
-            println!("摄氏度 {} 等同于华氏度 {}", celsius, fahrenheit);
-        } else {
-            println!("输入一个值，以F结尾代表华氏度，或者以C结尾为摄氏度。比如77F。");
-            continue;
+        let (value, unit) = input_str.split_at(at);
+        match &unit.to_uppercase()[..] {
+            "F" => {
+                let celsius = f_to_c(&value);
+                println!("华氏度 {} 等同于摄氏度 {}", value, celsius);
+            }
+            "C" => {
+                let fahrenheit = c_to_f(&value);
+                println!("摄氏度 {} 等同于华氏度 {}", value, fahrenheit);
+            }
+            _ => {
+                println!("输入一个值，以F结尾代表华氏度，或者以C结尾为摄氏度。比如77F。");
+                continue;
+            }
         }
         break;
     }
+}
+
+fn f_to_c(value: &str) -> f64 {
+    let fahrenheit: f64 = value.parse().expect("error");
+    5.0 / 9.0 * (fahrenheit - 32.0)
+}
+
+fn c_to_f(value: &str) -> f64 {
+    let celsius: f64 = value.parse().expect("error");
+    9.0 / 5.0 * celsius + 32.0
 }
 
 fn fibon() {
