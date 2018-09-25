@@ -11,16 +11,15 @@ fn main() {
         let mut func_num = String::new();
         io::stdin().read_line(&mut func_num).expect("error");
         let func_num: i32 = func_num.trim().parse().expect("error");
-        if func_num == 1 {
-            f_c_converter();
-        } else if func_num == 2 {
-            fibon();
-        } else if func_num == 3 {
-            fuck_christmas();
-        } else {
-            println!("滚吧！");
-            break;
-        }
+        match func_num {
+            1 => f_c_converter(),
+            2 => fibon(),
+            3 => fuck_christmas(),
+            _ => {
+                println!("滚吧！");
+                break;
+            }
+        };
     }
 }
 
